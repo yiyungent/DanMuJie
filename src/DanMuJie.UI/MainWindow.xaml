@@ -8,21 +8,11 @@
         Title="弹幕街 for 弹幕姬" Height="500" Width="376" Loaded="Window_Loaded" MinWidth="376" MinHeight="220" MaxWidth="376" WindowStartupLocation="CenterScreen" Topmost="True">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="129*"/>
-            <ColumnDefinition Width="7*"/>
-            <ColumnDefinition Width="82*"/>
-            <ColumnDefinition Width="152*"/>
         </Grid.ColumnDefinitions>
-
-        <RadioButton Name="Netease" GroupName="MusicApi" Content="网易" IsChecked="True" Margin="17,34,61.624,416.667" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" />
-        <RadioButton Name="KuGou" GroupName="MusicApi" Content="酷狗" Margin="82,35,3.333,415.667" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" Grid.ColumnSpan="2" />
-        <RadioButton Name="Baidu" GroupName="MusicApi" Content="百度" Margin="1.667,34,100.333,416.667" Grid.Column="3" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" />
-        <RadioButton Name="Tencent" GroupName="MusicApi" Content="QQ" Margin="23.667,33,8.333,417.667" Grid.Column="2" RenderTransformOrigin="0.053,0.184" HorizontalAlignment="Center" Width="50" VerticalAlignment="Center" Height="20" />
-        <RadioButton Name="Xiami" GroupName="MusicApi" Content="虾米" Margin="86.667,36,15.333,414.667" Grid.Column="3" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" />
-
-        <TextBox Name="TxtSongKeyword" Text="关键词" Margin="17,127,32.333,306.667" HorizontalAlignment="Center" Width="168" Grid.ColumnSpan="3" />
-        <Button Name="BtnSearch" Content="搜索" HorizontalAlignment="Center" Margin="23.667,127,35.333,0" VerticalAlignment="Top" Width="93" Height="37" Click="BtnSearch_Click" MouseDoubleClick="BtnSearch_MouseDoubleClick"  Grid.Column="3"/>
-        <DataGrid Name="SearchResult" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,205,0.333,-0.333" Grid.ColumnSpan="4" >
+        <TextBlock Name="TBUse" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="使用说明：" VerticalAlignment="Top" Height="66" Width="349"/>
+        <Label Name="LbMessage" Content="提示消息" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.438,1.841"/>
+        <Label Content="下方是搜索结果，不是歌单" HorizontalAlignment="Left" Margin="182,81,0,0" VerticalAlignment="Top"/>
+        <DataGrid Name="SearchResult" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,112,0.333,-0.333" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID"  Binding="{Binding id}"/>
                 <DataGridTextColumn Header="名称" Binding="{Binding name}" />
@@ -30,6 +20,7 @@
                 <DataGridCheckBoxColumn Header="作者" Binding="{Binding artist}" />
             </DataGrid.Columns>
         </DataGrid>
+
 
     </Grid>
 </Window>

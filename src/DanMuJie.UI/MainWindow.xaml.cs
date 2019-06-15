@@ -26,18 +26,19 @@ namespace DanMuJie.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public DanMuJieMain DanMuJieMain { get; set; }
-
-        public Meting Api { get; set; }
+        public static DanMuJieMain DanMuJieMain { get; set; }
 
         //public CefSharp.Wpf.ChromiumWebBrowser Browser { get; set; }
 
-        public MainWindow()
+        public MainWindow(DanMuJieMain danMuJieMain)
         {
+            DanMuJieMain = danMuJieMain;
+
             InitializeComponent();
 
-            Api = new Meting(ServerProvider.Xiami);
-            Api.Format = true;
+            this.TBUse.Text = @"使用说明: 发送以下
+       dmj-qq-歌曲名
+       音乐API有: qq, xiami, kugou, 163, baidu";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -60,50 +61,35 @@ namespace DanMuJie.UI
             #endregion
         }
 
-        #region 点击搜索
-        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        public void ShowMessage(string message)
         {
-            Debug.Write("测试");
-            string songKeyword = this.TxtSongKeyword.Text;
-
-            new Thread(() =>
-            {
-                SearchSongByKeyword(songKeyword);
-            }).Start();
-        }
-        #endregion
-
-        #region 搜索歌曲通过关键词
-        public void SearchSongByKeyword(string keyword)
-        {
-            Music_search_item[] songs = new Music_search_item[0];
             try
             {
-                songs = Api.SearchObj(keyword);
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    this.LbMessage.Content = message;
+                }));
             }
             catch (Exception ex)
-            { }
-
-            this.Dispatcher.Invoke(new Action(() =>
             {
-                this.SearchResult.DataContext = songs;
-            }));
 
-            if (songs.Length >= 1)
-            {
-                PlayMusicHelper.PlayUrl(GetPlayUrlById(songs[0].url_id));
             }
         }
-        #endregion
 
-        private void BtnSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        public void ReLoadSearchResult(object data)
         {
-            BtnSearch_Click(sender, e);
+            try
+            {
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    this.SearchResult.DataContext = data;
+                }));
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
-        private string GetPlayUrlById(string id)
-        {
-            return Api.UrlObj(id).url;
-        }
     }
 }

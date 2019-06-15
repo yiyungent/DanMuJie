@@ -10,18 +10,46 @@ namespace DanMuJie.UI
 {
     public class PlayMusicHelper
     {
-        public static void PlayUrl(string url)
+        public static WaveOutEvent Wo { get; set; }
+
+        public static Dictionary<string, MediaFoundationReader> MusicResList { get; set; }
+
+        public static void AddPlayList(string url)
         {
-            using (var mf = new MediaFoundationReader(url))
-            using (var wo = new WaveOutEvent())
+            if (MusicResList == null)
             {
-                wo.Init(mf);
-                wo.Play();
-                while (wo.PlaybackState == PlaybackState.Playing)
-                {
-                    Thread.Sleep(1000);
-                }
+                MusicResList = new Dictionary<string, MediaFoundationReader>();
             }
+
+            if (!MusicResList.Keys.Contains(url))
+            {
+                MusicResList.Add(url, new MediaFoundationReader(url));
+            }
+
+            Exchange(url);
         }
+
+        public static void Exchange(string url)
+        {
+            if (Wo == null)
+            {
+                Wo = new WaveOutEvent();
+            }
+            if (Wo.PlaybackState != PlaybackState.Stopped)
+            {
+                Wo.Stop();
+            }
+            Wo.Init(MusicResList[url]);
+            Wo.Play();
+            while (Wo.PlaybackState == PlaybackState.Playing)
+            {
+                Thread.Sleep(1000);
+            }
+            Wo.Stop();
+
+            Exchange(MusicResList.Keys.ToArray()[new Random().Next(0, MusicResList.Count - 1)]);
+        }
+
+
     }
 }
